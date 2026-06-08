@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>经典重读·AI伴学</title>
+    <!-- 引入 Bootstrap 5 快速美化 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f9f5f0;
+            color: #3e2e1f;
+        }
+        .navbar {
+            background-color: #8b5a2b !important;
+        }
+        .navbar-brand, .nav-link {
+            color: #fff !important;
+        }
+        .hero {
+            background: url('https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+        }
+        .section-title {
+            border-left: 5px solid #8b5a2b;
+            padding-left: 15px;
+            margin: 30px 0 20px;
+            font-weight: bold;
+        }
+        .card {
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            background-color: #fff;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .category-icon {
+            font-size: 3rem;
+            color: #8b5a2b;
+        }
+        .footer {
+            background-color: #3e2e1f;
+            color: #fff;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+<!-- 导航栏 -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">经典重读·AI伴学</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">首页</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/books">典籍库</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/community">研讨社区</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">关于</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero 轮播/大图 -->
+<div class="hero">
+    <div class="text-center">
+        <h1>经典重读·AI伴学</h1>
+        <p class="lead">让经典更容易读、更容易懂、更容易传播</p>
+        <a href="/books" class="btn btn-light btn-lg">开始阅读</a>
+    </div>
+</div>
+
+<div class="container">
+    <!-- 分类快速入口 -->
+    <h2 class="section-title">典籍分类</h2>
+    <div class="row mb-5">
+        <div class="col-md-6 col-lg-4 mb-4" th:each="category : ${categories}">
+            <div class="card text-center p-3">
+                <div class="category-icon">📚</div>
+                <h4 th:text="${category.name}">经</h4>
+                <p th:text="${category.description}">儒家经典</p>
+                <a th:href="@{/books?categoryId={id}(id=${category.id})}" class="btn btn-outline-primary btn-sm">查看典籍</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 推荐典籍 -->
+    <h2 class="section-title">推荐典籍</h2>
+    <div class="row">
+        <div class="col-md-6 col-lg-4 mb-4" th:each="book : ${recommendedBooks}">
+            <div class="card h-100">
+                <img th:src="${book.coverUrl != null ? book.coverUrl : 'https://via.placeholder.com/300x200?text=Book'}" class="card-img-top" th:alt="${book.title}">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${book.title}">论语</h5>
+                    <p class="card-text" th:text="${book.author + ' · ' + book.dynasty}">孔子 · 春秋</p>
+                    <p class="card-text" th:text="${book.description}">简介...</p>
+                    <a th:href="@{/books/{id}(id=${book.id})}" class="btn btn-primary">阅读</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 最新笔记/讨论（静态占位，后续可动态） -->
+    <h2 class="section-title">最新讨论</h2>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card p-3">
+                <h5>用户A：读《论语》有感</h5>
+                <p>“学而时习之”今天有了新理解...</p>
+                <small class="text-muted">2小时前</small>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card p-3">
+                <h5>用户B：求推荐史记版本</h5>
+                <p>想入手一套史记，哪个版本好？</p>
+                <small class="text-muted">昨天</small>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card p-3">
+                <h5>用户C：打卡第7天</h5>
+                <p>坚持读《孟子》一周了，受益匪浅</p>
+                <small class="text-muted">3天前</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 页脚 -->
+<footer class="footer text-center">
+    <div class="container">
+        <p>&copy; 2026 经典重读·AI伴学 团队 | 响应“全民阅读”号召，用科技传承经典</p>
+    </div>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
